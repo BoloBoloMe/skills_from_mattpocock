@@ -1,18 +1,18 @@
-# Hard limits on the number of questions during grilling
+# grilling 期间问题数量的硬性限制
 
-The `/grill-me` skill (and grilling sessions inside other skills) does not enforce a maximum number of questions. Requests to add a configurable cap or hard ceiling are out of scope.
+`/grill-me` skill（以及其他 skills 内的 grilling 会话）不会强制设置最大问题数。添加可配置上限或硬性封顶的请求不在范围内。
 
-## Why this is out of scope
+## 为什么不在范围内
 
-Grilling is intentionally open-ended. The point is to keep digging until each branch of the decision tree is resolved — some plans need three questions, some need fifty. A fixed cap would either cut off useful exploration on hard problems or feel arbitrary on easy ones.
+Grilling 有意保持开放式。目标是持续追问，直到决策树的每个分支都得到解决——有些计划需要三个问题，有些需要五十个。固定上限要么会在困难问题上截断有用探索，要么会在简单问题上显得武断。
 
-If a session feels too long, the right escape hatches already exist:
+如果某次会话感觉太长，合适的逃生口已经存在：
 
-- The user can stop the session at any time and accept the current state of the plan.
-- The user can tell the model to wrap up, summarise, and move on — natural-language steering is the intended control surface, not a numeric limit.
+- 用户可以随时停止会话，并接受当前计划状态。
+- 用户可以告诉模型收尾、总结并继续前进——自然语言引导才是预期的控制面，而不是数字限制。
 
-Adding a hard cap would also conflate two different failure modes: a model that asks too many questions because the plan is genuinely under-specified (working as intended) vs. a model that asks redundant or low-value questions (a prompt-quality issue, not a quantity issue). The fix for the latter belongs in the skill prompt, not in a counter.
+添加硬性上限还会混淆两种不同的失败模式：模型因为计划确实描述不足而提出太多问题（按预期工作），以及模型提出重复或低价值问题（这是提示词质量问题，而不是数量问题）。后者的修复应放在 skill prompt 中，而不是放进计数器里。
 
-## Prior requests
+## 过往请求
 
-- #44 — "Codex just asked me 200 questions"
+- #44 — “Codex 刚问了我 200 个问题”

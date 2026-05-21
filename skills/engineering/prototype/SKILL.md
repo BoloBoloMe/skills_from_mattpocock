@@ -1,30 +1,30 @@
 ---
 name: prototype
-description: Build a throwaway prototype to flesh out a design before committing to it. Routes between two branches — a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route. Use when the user wants to prototype, sanity-check a data model or state machine, mock up a UI, explore design options, or says "prototype this", "let me play with it", "try a few designs".
+description: 构建一次性原型，在正式投入前充实设计。会在两个分支间路由——用于状态/业务逻辑问题的可运行终端应用，或在一个路由上可切换的多个差异显著的 UI 变体。适用于用户想做原型、校验数据模型或状态机、模拟 UI、探索设计选项，或说“prototype this”（给这个做原型）、“let me play with it”（让我试用一下）、“try a few designs”（试几个设计）的场景。
 ---
 
-# Prototype
+# 原型
 
-A prototype is **throwaway code that answers a question**. The question decides the shape.
+原型是**用于回答一个问题的一次性代码**。问题决定形态。
 
-## Pick a branch
+## 选择分支
 
-Identify which question is being answered — from the user's prompt, the surrounding code, or by asking if the user is around:
+从用户提示、周边代码中识别正在回答的问题；如果用户在场，也可以询问：
 
-- **"Does this logic / state model feel right?"** → [LOGIC.md](LOGIC.md). Build a tiny interactive terminal app that pushes the state machine through cases that are hard to reason about on paper.
-- **"What should this look like?"** → [UI.md](UI.md). Generate several radically different UI variations on a single route, switchable via a URL search param and a floating bottom bar.
+- **“这个逻辑 / 状态模型感觉对吗？”** → [LOGIC.md](LOGIC.md)。构建一个微型交互式终端应用，把状态机推过那些纸面上很难推理的案例。
+- **“这应该长什么样？”** → [UI.md](UI.md)。在单一路由上生成多个差异显著的 UI 变体，并通过 URL 查询参数和浮动底栏切换。
 
-The two branches produce very different artifacts — getting this wrong wastes the whole prototype. If the question is genuinely ambiguous and the user isn't reachable, default to whichever branch better matches the surrounding code (a backend module → logic; a page or component → UI) and state the assumption at the top of the prototype.
+两个分支会产出非常不同的制品——选错会让整个原型都白费。如果问题确实模糊且无法联系到用户，默认选择更匹配周边代码的分支（后端模块 → 逻辑；页面或组件 → UI），并在原型顶部写明这个假设。
 
-## Rules that apply to both
+## 两者都适用的规则
 
-1. **Throwaway from day one, and clearly marked as such.** Locate the prototype code close to where it will actually be used (next to the module or page it's prototyping for) so context is obvious — but name it so a casual reader can see it's a prototype, not production. For throwaway UI routes, obey whatever routing convention the project already uses; don't invent a new top-level structure.
-2. **One command to run.** Whatever the project's existing task runner supports — `pnpm <name>`, `python <path>`, `bun <path>`, etc. The user must be able to start it without thinking.
-3. **No persistence by default.** State lives in memory. Persistence is the thing the prototype is _checking_, not something it should depend on. If the question explicitly involves a database, hit a scratch DB or a local file with a clear "PROTOTYPE — wipe me" name.
-4. **Skip the polish.** No tests, no error handling beyond what makes the prototype _runnable_, no abstractions. The point is to learn something fast and then delete it.
-5. **Surface the state.** After every action (logic) or on every variant switch (UI), print or render the full relevant state so the user can see what changed.
-6. **Delete or absorb when done.** When the prototype has answered its question, either delete it or fold the validated decision into the real code — don't leave it rotting in the repo.
+1. **从第一天起就是一次性的，并明确标记。** 将原型代码放在它实际会被使用的位置附近（紧邻它要验证的模块或页面），这样上下文清楚——但命名要让普通读者能看出它是原型，而不是生产代码。对于一次性 UI 路由，遵守项目既有的路由约定；不要发明新的顶层结构。
+2. **一条命令即可运行。** 使用项目现有任务运行器支持的方式——`pnpm <name>`、`python <path>`、`bun <path>` 等。用户必须能不费脑子地启动它。
+3. **默认不持久化。** 状态存在内存中。持久化是原型要_检查_的东西，不应该成为它的依赖。如果问题明确涉及数据库，就连接一个临时 DB 或本地文件，并使用清晰的 “PROTOTYPE — wipe me” 名称。
+4. **跳过打磨。** 不写测试，除了让原型_可运行_所需的错误处理外不做额外错误处理，不做抽象。目标是快速学到东西，然后删除。
+5. **暴露状态。** 每次动作（action）后（逻辑）或每次切换变体时（UI），打印或渲染完整的相关状态，让用户看到发生了什么变化。
+6. **完成后删除或吸收。** 当原型回答了问题，要么删除它，要么把经过验证的决策折叠进真实代码——不要让它在仓库里腐烂。
 
-## When done
+## 完成时
 
-The _answer_ is the only thing worth keeping from a prototype. Capture it somewhere durable (commit message, ADR, issue, or a `NOTES.md` next to the prototype) along with the question it was answering. If the user is around, that capture is a quick conversation; if not, leave the placeholder so they (or you, on the next pass) can fill in the verdict before deleting the prototype.
+原型中唯一值得保留的是_答案_。把它连同所回答的问题一起捕获到持久位置（提交消息（commit message）、ADR、issue，或原型旁边的 `NOTES.md`）。如果用户在场，这只是一次简短对话；如果不在，留下占位，方便他们（或你在下一轮）在删除原型前填入结论。

@@ -1,14 +1,14 @@
 ---
 name: edit-article
-description: Edit and improve articles by restructuring sections, improving clarity, and tightening prose. Use when user wants to edit, revise, or improve an article draft.
+description: 通过重构章节、提高清晰度并收紧行文来编辑和改进文章。当用户想编辑、修订或改进文章草稿时使用。
 ---
 
-1. First, divide the article into sections based on its headings. Think about the main points you want to make during those sections.
+1. 首先，根据标题将文章划分为各个章节。思考你希望在这些章节中表达的主要观点。
 
-Consider that information is a directed acyclic graph, and that pieces of information can depend on other pieces of information. Make sure that the order of the sections and their contents respects these dependencies.
+将信息视为有向无环图，信息片段可能依赖其他信息片段。确保章节顺序及其内容遵守这些依赖关系。
 
-Confirm the sections with the user.
+向用户确认这些章节。
 
-2. For each section:
+2. 对每个章节：
 
-2a. Rewrite the section to improve clarity, coherence, and flow. Use maximum 240 characters per paragraph.
+2a. 重写该章节，以提高清晰度、连贯性和流畅度。每段最多 240 个字符。

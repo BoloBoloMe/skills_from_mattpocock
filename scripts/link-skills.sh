@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Links all skills in the repository to ~/.claude/skills, so that
-# they can be used by the local Claude CLI.
+# 将仓库中的所有 skills 链接到 ~/.claude/skills，以便
+# 本地 Claude CLI 可以使用它们。
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 DEST="$HOME/.claude/skills"
 
-# If ~/.claude/skills is a symlink that resolves into this repo, we'd end up
-# writing the per-skill symlinks back into the repo's own skills/ tree. Detect
-# and bail out instead of polluting the working copy.
+# 如果 ~/.claude/skills 是一个解析到此仓库内的符号链接，我们最终会
+# 把每个 skill 的符号链接写回仓库自己的 skills/ 树。检测这种情况，
+# 并直接退出，避免污染工作副本。
 if [ -L "$DEST" ]; then
   resolved="$(readlink -f "$DEST")"
   case "$resolved" in
     "$REPO"|"$REPO"/*)
-      echo "error: $DEST is a symlink into this repo ($resolved)." >&2
-      echo "Remove it (rm \"$DEST\") and re-run; the script will recreate it as a real dir." >&2
+      echo "错误：$DEST 是指向此仓库内部的符号链接（$resolved）。" >&2
+      echo "请删除它（rm \"$DEST\"）后重新运行；脚本会把它重新创建为真实目录。" >&2
       exit 1
       ;;
   esac
@@ -34,5 +34,5 @@ while IFS= read -r -d '' skill_md; do
   fi
 
   ln -sfn "$src" "$target"
-  echo "linked $name -> $src"
+  echo "已链接 $name -> $src"
 done
