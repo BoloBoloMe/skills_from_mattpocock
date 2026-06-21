@@ -1,18 +1,18 @@
-# Productivity
+# 生产力
 
-General workflow tools, not code-specific.
+通用工作流工具, 不是代码特定的.
 
-## User-invoked
+## 用户调用
 
-Reachable only when you type them (`disable-model-invocation: true`).
+仅在你手动输入时可达 (`disable-model-invocation: true`).
 
-- **[grill-me](./grill-me/SKILL.md)** — Get relentlessly interviewed about a plan or design until every branch of the decision tree is resolved.
-- **[handoff](./handoff/SKILL.md)** — Compact the current conversation into a handoff document so another agent can continue the work.
-- **[teach](./teach/SKILL.md)** — Teach the user a new skill or concept over multiple sessions, using the current directory as a stateful teaching workspace.
-- **[writing-great-skills](./writing-great-skills/SKILL.md)** — Reference for writing and editing skills well: the vocabulary and principles that make a skill predictable.
+- **[grill-me](./grill-me/SKILL.md)** - 接受关于计划或设计的不懈访谈, 直到决策树的每个分支都被解决.
+- **[handoff](./handoff/SKILL.md)** - 将当前对话压缩为 handoff 文档, 让另一个 agent 可以继续工作.
+- **[teach](./teach/SKILL.md)** - 在多个会话中教用户一个新技能或概念, 使用当前目录作为有状态教学工作区.
+- **[writing-great-skills](./writing-great-skills/SKILL.md)** - 写好和编辑好技能的参考: 让技能可预测的词汇和原则.
 
-## Model-invoked
+## 模型调用
 
-Model- or user-reachable (rich trigger phrasing so the model can reach for them).
+模型或用户可达 (丰富的触发短语让模型可以主动调用).
 
-- **[grilling](./grilling/SKILL.md)** — Interview the user relentlessly about a plan or design until every branch of the decision tree is resolved.
+- **[grilling](./grilling/SKILL.md)** - 对用户的计划或设计进行不懈访谈, 直到决策树的每个分支都被解决.

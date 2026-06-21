@@ -1,31 +1,31 @@
-# MISSION.md Format
+# MISSION.md 格式
 
-`MISSION.md` lives at the workspace root. It captures the _reason_ the user is learning this topic. Every teaching decision — what to teach next, which resources to surface, which exercises to design — should trace back to this document.
+`MISSION.md` 位于工作区根目录. 它捕获用户学习此主题的 _原因_. 每个教学决策 - 接下来教什么, 提出哪些资源, 设计哪些练习 - 都应追溯到这份文档.
 
-## Template
+## 模板
 
 ```md
 # Mission: {Topic}
 
 ## Why
-{1-3 sentences. The concrete real-world goal the user is chasing. What changes in their life or work when they have this skill? Avoid abstract framings like "to understand X" — push for the underlying outcome.}
+{1-3 句话. 用户追求的具体现实世界目标. 当他们拥有此技能时, 其生活或工作会改变什么? 避免像 "为了理解 X" 这样的抽象表述 - 推向底层结果.}
 
 ## Success looks like
-- {A specific, observable thing the user will be able to do}
-- {Another specific thing}
-- {…}
+- {一个具体, 可观察的东西, 用户能够做到}
+- {另一个具体的东西}
+- {...}
 
 ## Constraints
-- {Time, budget, prior commitments, learning preferences, anything that bounds the approach}
+- {时间, 预算, 先前承诺, 学习偏好, 任何限制方法的因素}
 
 ## Out of scope
-- {Adjacent topics the user explicitly does not want to chase right now — protects the zone of proximal development}
+- {用户明确不想现在追求的相邻主题 - 保护最近发展区}
 ```
 
-## Rules
+## 规则
 
-- **One mission per workspace.** If the user wants to learn two unrelated things, that is two workspaces.
-- **Concrete over abstract.** "Run a half marathon by October" beats "get fitter." "Ship a Rust CLI to my team" beats "learn Rust."
-- **Push back on vagueness.** If the user cannot articulate why, interview them before writing anything. A bad mission is worse than no mission.
-- **Revise when reality shifts.** Missions change. When the user's goal moves, update this file — don't leave a stale mission steering future sessions.
-- **Keep it short.** If `MISSION.md` runs past a screen, it has stopped being a compass and started being a plan.
+- **每个工作区一个使命.** 如果用户想学两件不相关的东西, 那是两个工作区.
+- **具体优于抽象.** "十月前跑半马" 胜过 "变得更健康." "向团队发布 Rust CLI" 胜过 "学 Rust."
+- **对模糊性反击.** 如果用户无法清晰表达为什么, 在写任何东西之前访谈他们. 一个坏的使命比没有使命更糟.
+- **现实变化时修订.** 使命变化. 当用户的目标移动时, 更新此文件 - 不要留下过时使命引导未来会话.
+- **保持简短.** 如果 `MISSION.md` 超过一屏, 它已不再是罗盘而变成了计划.

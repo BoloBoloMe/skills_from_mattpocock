@@ -1,84 +1,84 @@
 ---
 name: to-issues
-description: Break a plan, spec, or PRD into independently-grabbable issues on the project issue tracker using tracer-bullet vertical slices.
+description: 使用 tracer-bullet 垂直切片, 将计划, spec 或 PRD 拆成项目 issue tracker 上可独立领取的 issues.
 disable-model-invocation: true
 ---
 
-# To Issues
+# 转为 Issues
 
-Break a plan into independently-grabbable issues using vertical slices (tracer bullets).
+使用 vertical slice (tracer bullet) 将计划拆为可独立抓取的 issue.
 
-The issue tracker and triage label vocabulary should have been provided to you — run `/setup-matt-pocock-skills` if not.
+Issue tracker 和 triage label 词汇应该已提供给你 - 如果没有, 运行 `/setup-matt-pocock-skills`.
 
-## Process
+## 流程
 
-### 1. Gather context
+### 1. 收集上下文
 
-Work from whatever is already in the conversation context. If the user passes an issue reference (issue number, URL, or path) as an argument, fetch it from the issue tracker and read its full body and comments.
+从对话上下文中已有的任何内容工作. 如果用户传递了一个 issue 引用 (issue 编号, URL, 或路径) 作为参数, 从 issue tracker 获取它并读取其完整 body 和评论.
 
-### 2. Explore the codebase (optional)
+### 2. 探索代码库 (可选)
 
-If you have not already explored the codebase, do so to understand the current state of the code. Issue titles and descriptions should use the project's domain glossary vocabulary, and respect ADRs in the area you're touching.
+如果你还没有探索代码库, 做一下以了解代码的当前状态. Issue 标题和描述应使用项目的领域术语表词汇, 并尊重你触及区域的 ADR.
 
-Look for opportunities to prefactor the code to make the implementation easier. "Make the change easy, then make the easy change."
+寻找 prefactor 代码的机会以使实现更容易. "先让变更变得容易, 然后做那个容易的变更."
 
-### 3. Draft vertical slices
+### 3. 草拟 vertical slice
 
-Break the plan into **tracer bullet** issues. Each issue is a thin vertical slice that cuts through ALL integration layers end-to-end, NOT a horizontal slice of one layer.
+将计划拆为 **tracer bullet** issue. 每个 issue 是一个切穿 ALL 集成层端到端的 thin vertical slice, 不是一层的水平切片.
 
 <vertical-slice-rules>
 
-- Each slice delivers a narrow but COMPLETE path through every layer (schema, API, UI, tests)
-- A completed slice is demoable or verifiable on its own
-- Any prefactoring should be done first
+- 每个 slice 交付一条狭窄但 COMPLETE 的穿过每一层 (schema, API, UI, tests) 的路径
+- 一个完成的 slice 可独立 demo 或验证
+- 任何 prefactoring 应先完成
 
 </vertical-slice-rules>
 
-### 4. Quiz the user
+### 4. 向用户提问
 
-Present the proposed breakdown as a numbered list. For each slice, show:
+将拟议的拆分以编号列表展示. 对于每个 slice, 展示:
 
-- **Title**: short descriptive name
-- **Blocked by**: which other slices (if any) must complete first
-- **User stories covered**: which user stories this addresses (if the source material has them)
+- **Title**: 短描述性名称
+- **Blocked by**: 哪些其他 slice (如果有) 必须先完成
+- **覆盖的 user stories**: 这个 slice 涵盖哪些 user stories (如果源材料有它们)
 
-Ask the user:
+问用户:
 
-- Does the granularity feel right? (too coarse / too fine)
-- Are the dependency relationships correct?
-- Should any slices be merged or split further?
+- 粒度感觉合适吗? (太粗 / 太细)
+- 依赖关系正确吗?
+- 有任何 slice 应合并还是进一步拆分?
 
-Iterate until the user approves the breakdown.
+迭代直到用户批准拆分.
 
-### 5. Publish the issues to the issue tracker
+### 5. 将 issue 发布到 issue tracker
 
-For each approved slice, publish a new issue to the issue tracker. Use the issue body template below. These issues are considered ready for AFK agents, so publish them with the correct triage label unless instructed otherwise.
+对于每个批准的 slice, 向 issue tracker 发布一个新 issue. 使用下方 issue body 模板. 这些 issue 被视为 ready for AFK agent, 所以用正确的 triage label 发布它们, 除非另有指示.
 
-Publish issues in dependency order (blockers first) so you can reference real issue identifiers in the "Blocked by" field.
+按依赖顺序发布 issue (先发布 blocker), 这样你可以在 "Blocked by" 字段中引用真实的 issue 标识符.
 
 <issue-template>
-## Parent
+## 父级
 
-A reference to the parent issue on the issue tracker (if the source was an existing issue, otherwise omit this section).
+对 issue tracker 上 parent issue 的引用 (如果来源是已有 issue, 否则省略此章节).
 
-## What to build
+## 要构建什么
 
-A concise description of this vertical slice. Describe the end-to-end behavior, not layer-by-layer implementation.
+此 vertical slice 的简洁描述. 描述端到端行为, 不是逐层实现.
 
-Avoid specific file paths or code snippets — they go stale fast. Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it here and note briefly that it came from a prototype. Trim to the decision-rich parts — not a working demo, just the important bits.
+避免具体文件路径或代码片段 - 它们很快过期. 例外: 如果原型产出了一个比散文更能精确编码决策的片段 (状态机, reducer, schema, 类型形状), 在此处内联它并简要注明它来自原型. 剪裁到决策密集的部分 - 不是可运行的 demo, 只是重要的片段.
 
-## Acceptance criteria
+## 验收标准
 
-- [ ] Criterion 1
-- [ ] Criterion 2
-- [ ] Criterion 3
+- [ ] 标准 1
+- [ ] 标准 2
+- [ ] 标准 3
 
-## Blocked by
+## 被什么阻塞
 
-- A reference to the blocking ticket (if any)
+- 对 blocker ticket 的引用 (如果有)
 
-Or "None - can start immediately" if no blockers.
+或 "None - can start immediately" 如果没有 blocker.
 
 </issue-template>
 
-Do NOT close or modify any parent issue.
+不要关闭或修改任何 parent issue.

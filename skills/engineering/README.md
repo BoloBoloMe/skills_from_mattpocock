@@ -1,25 +1,25 @@
-# Engineering
+# 工程
 
-Skills I use daily for code work.
+日常代码工作中使用的技能.
 
-## User-invoked
+## 用户调用
 
-Reachable only when you type them (`disable-model-invocation: true`).
+仅在你手动输入时可达 (`disable-model-invocation: true`).
 
-- **[ask-matt](./ask-matt/SKILL.md)** — Ask which skill or flow fits your situation. A router over the user-invoked skills in this repo.
-- **[grill-with-docs](./grill-with-docs/SKILL.md)** — Grilling session that also builds your project's domain model, sharpening terminology and updating `CONTEXT.md` and ADRs inline.
-- **[triage](./triage/SKILL.md)** — Move issues through a state machine of triage roles.
-- **[improve-codebase-architecture](./improve-codebase-architecture/SKILL.md)** — Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.
-- **[setup-matt-pocock-skills](./setup-matt-pocock-skills/SKILL.md)** — Configure this repo for the engineering skills (issue tracker, triage labels, domain doc layout). Run once per repo.
-- **[to-issues](./to-issues/SKILL.md)** — Break any plan, spec, or PRD into independently-grabbable issues using vertical slices.
-- **[to-prd](./to-prd/SKILL.md)** — Turn the current conversation into a PRD and publish it to the issue tracker.
-- **[prototype](./prototype/SKILL.md)** — Build a throwaway prototype — a runnable terminal app for state/logic questions, or several toggleable UI variations.
+- **[ask-matt](./ask-matt/SKILL.md)** - 询问哪个技能或流程适合你的情况. 本仓库中 user-invoked 技能的路由器.
+- **[grill-with-docs](./grill-with-docs/SKILL.md)** - 在 grilling 会话中同时构建项目的领域模型, 锐化术语并内联更新 `CONTEXT.md` 和 ADR.
+- **[triage](./triage/SKILL.md)** - 将 issue 推进 triage 角色状态机.
+- **[improve-codebase-architecture](./improve-codebase-architecture/SKILL.md)** - 扫描代码库寻找 deepening 机会, 以可视化 HTML 报告呈现, 然后 grilling 你选定的那一个.
+- **[setup-matt-pocock-skills](./setup-matt-pocock-skills/SKILL.md)** - 为 engineering 技能配置本仓库 (issue tracker, triage label, 领域文档布局). 每个仓库运行一次.
+- **[to-issues](./to-issues/SKILL.md)** - 将任何计划, spec 或 PRD 拆分为可独立抓取的 issue, 使用 vertical slice.
+- **[to-prd](./to-prd/SKILL.md)** - 将当前对话转化为 PRD 并发布到 issue tracker.
+- **[prototype](./prototype/SKILL.md)** - 构建一次性原型 - 用于状态/逻辑问题的可运行终端应用, 或多个可切换的 UI 变体.
 
-## Model-invoked
+## 模型调用
 
-Model- or user-reachable (rich trigger phrasing so the model can reach for them).
+模型或用户可达 (丰富的触发短语让模型可以主动调用).
 
-- **[diagnosing-bugs](./diagnosing-bugs/SKILL.md)** — Disciplined diagnosis loop for hard bugs and performance regressions: reproduce → minimise → hypothesise → instrument → fix → regression-test.
-- **[tdd](./tdd/SKILL.md)** — Test-driven development with a red-green-refactor loop. Builds features or fixes bugs one vertical slice at a time.
-- **[domain-modeling](./domain-modeling/SKILL.md)** — Actively build and sharpen a project's domain model — challenge terms, stress-test with scenarios, update `CONTEXT.md` and ADRs inline.
-- **[codebase-design](./codebase-design/SKILL.md)** — Shared discipline and vocabulary for designing deep modules: small interfaces, clean seams, testable through the interface.
+- **[diagnosing-bugs](./diagnosing-bugs/SKILL.md)** - 针对 hard bug 和性能回归的严谨诊断循环: 复现 -> 最小化 -> 提假设 -> 插桩 -> 修复 -> 回归测试.
+- **[tdd](./tdd/SKILL.md)** - 使用 red-green-refactor 循环的测试驱动开发. 每次一个 vertical slice 来构建功能或修复 bug.
+- **[domain-modeling](./domain-modeling/SKILL.md)** - 主动构建并锐化项目的领域模型 - 挑战术语, 用场景做压力测试, 内联更新 `CONTEXT.md` 和 ADR.
+- **[codebase-design](./codebase-design/SKILL.md)** - 设计 deep module 的共享纪律与词汇: 小接口, 清洁 seam, 可通过接口测试.

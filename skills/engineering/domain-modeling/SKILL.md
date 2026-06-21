@@ -1,74 +1,74 @@
 ---
 name: domain-modeling
-description: Build and sharpen a project's domain model. Use when the user wants to pin down domain terminology or a ubiquitous language, record an architectural decision, or when another skill needs to maintain the domain model.
+description: 构建并锐化项目领域模型. 当用户想确定领域术语或通用语言, 记录架构决策, 或其他技能需要维护领域模型时使用.
 ---
 
-# Domain Modeling
+# 领域建模
 
-Actively build and sharpen the project's domain model as you design. This is the *active* discipline — challenging terms, inventing edge-case scenarios, and writing the glossary and decisions down the moment they crystallise. (Merely *reading* `CONTEXT.md` for vocabulary is not this skill — that's a one-line habit any skill can do. This skill is for when you're changing the model, not just consuming it.)
+在设计时主动构建并锐化项目的领域模型. 这是 *主动* 纪律 - 挑战术语, 构造边缘案例场景, 并在术语和决策结晶时立即写下术语表和决策. (仅仅是 *阅读* `CONTEXT.md` 来获取词汇不是这个技能 - 那是任何技能都可以做的一行习惯. 这个技能用于当你正在改变模型, 而不仅仅是消费它.)
 
-## File structure
+## 文件结构
 
-Most repos have a single context:
-
-```
-/
-├── CONTEXT.md
-├── docs/
-│   └── adr/
-│       ├── 0001-event-sourced-orders.md
-│       └── 0002-postgres-for-write-model.md
-└── src/
-```
-
-If a `CONTEXT-MAP.md` exists at the root, the repo has multiple contexts. The map points to where each one lives:
+大多数仓库有一个单一 context:
 
 ```
 /
-├── CONTEXT-MAP.md
-├── docs/
-│   └── adr/                          ← system-wide decisions
-├── src/
-│   ├── ordering/
-│   │   ├── CONTEXT.md
-│   │   └── docs/adr/                 ← context-specific decisions
-│   └── billing/
-│       ├── CONTEXT.md
-│       └── docs/adr/
+|---- CONTEXT.md
+|---- docs/
+|   `---- adr/
+|       |---- 0001-event-sourced-orders.md
+|       `---- 0002-postgres-for-write-model.md
+`---- src/
 ```
 
-Create files lazily — only when you have something to write. If no `CONTEXT.md` exists, create one when the first term is resolved. If no `docs/adr/` exists, create it when the first ADR is needed.
+如果根目录存在 `CONTEXT-MAP.md`, 仓库有多个 context. Map 指向每个 context 所在的位置:
 
-## During the session
+```
+/
+|---- CONTEXT-MAP.md
+|---- docs/
+|   `---- adr/                          <- 系统级决策
+|---- src/
+|   |---- ordering/
+|   |   |---- CONTEXT.md
+|   |   `---- docs/adr/                 <- context 级决策
+|   `---- billing/
+|       |---- CONTEXT.md
+|       `---- docs/adr/
+```
 
-### Challenge against the glossary
+惰性创建文件 - 仅在有内容可写时创建. 如果 `CONTEXT.md` 不存在, 在第一个术语被确定时创建它. 如果 `docs/adr/` 不存在, 在第一个 ADR 需要时创建它.
 
-When the user uses a term that conflicts with the existing language in `CONTEXT.md`, call it out immediately. "Your glossary defines 'cancellation' as X, but you seem to mean Y — which is it?"
+## 在会话期间
 
-### Sharpen fuzzy language
+### 对照术语表挑战
 
-When the user uses vague or overloaded terms, propose a precise canonical term. "You're saying 'account' — do you mean the Customer or the User? Those are different things."
+当用户使用的术语与 `CONTEXT.md` 中已有的语言冲突时, 立即指出. "你的术语表将 'cancellation' 定义为 X, 但你似乎指的是 Y - 到底是哪个?"
 
-### Discuss concrete scenarios
+### 锐化模糊语言
 
-When domain relationships are being discussed, stress-test them with specific scenarios. Invent scenarios that probe edge cases and force the user to be precise about the boundaries between concepts.
+当用户使用模糊或重载的术语时, 提出一个精确的规范术语. "你说 'account' - 你指的是 Customer 还是 User? 它们是不同的东西."
 
-### Cross-reference with code
+### 讨论具体场景
 
-When the user states how something works, check whether the code agrees. If you find a contradiction, surface it: "Your code cancels entire Orders, but you just said partial cancellation is possible — which is right?"
+当领域关系被讨论时, 用具体场景做压力测试. 构造探测边缘案例的场景, 迫使用户精确化概念之间的边界.
 
-### Update CONTEXT.md inline
+### 与代码交叉参考
 
-When a term is resolved, update `CONTEXT.md` right there. Don't batch these up — capture them as they happen. Use the format in [CONTEXT-FORMAT.md](./CONTEXT-FORMAT.md).
+当用户陈述某事如何运作时, 检查代码是否同意. 如果发现矛盾, 提出来: "你的代码取消整个 Order, 但你刚说部分取消是可能的 - 到底哪个是对的?"
 
-`CONTEXT.md` should be totally devoid of implementation details. Do not treat `CONTEXT.md` as a spec, a scratch pad, or a repository for implementation decisions. It is a glossary and nothing else.
+### 内联更新 CONTEXT.md
 
-### Offer ADRs sparingly
+当术语被确定时, 就在那个位置更新 `CONTEXT.md`. 不要批量处理 - 在发生时即时捕获. 使用 [CONTEXT-FORMAT.md](./CONTEXT-FORMAT.md) 中的格式.
 
-Only offer to create an ADR when all three are true:
+`CONTEXT.md` 应完全不含 implementation 细节. 不要把 `CONTEXT.md` 当作 spec, 草稿本, 或 implementation 决策的仓库. 它是术语表, 别无其他.
 
-1. **Hard to reverse** — the cost of changing your mind later is meaningful
-2. **Surprising without context** — a future reader will wonder "why did they do it this way?"
-3. **The result of a real trade-off** — there were genuine alternatives and you picked one for specific reasons
+### 节制地提议 ADR
 
-If any of the three is missing, skip the ADR. Use the format in [ADR-FORMAT.md](./ADR-FORMAT.md).
+仅在以下三个都满足时才提议创建 ADR:
+
+1. **难以逆转** - 后续改变想法的成本是显著的
+2. **没有上下文会令人惊讶** - 未来的读者会疑惑 "他们为什么要这样做?"
+3. **是真正 trade-off 的结果** - 存在真实的替代方案并且你出于特定原因选择了其中一个
+
+如果这三个中任何一个缺失, 跳过 ADR. 使用 [ADR-FORMAT.md](./ADR-FORMAT.md) 中的格式.

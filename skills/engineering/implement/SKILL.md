@@ -1,15 +1,15 @@
 ---
 name: implement
-description: "Implement a piece of work based on a PRD or set of issues."
+description: "基于 PRD 或一组 issues 实现一项工作."
 disable-model-invocation: true
 ---
 
-Implement the work described by the user in the PRD or issues.
+实现用户在 PRD 或 issue 中描述的工作.
 
-Use /tdd where possible, at pre-agreed seams.
+尽可能使用 /tdd, 在事先约定的 seam 处.
 
-Run typechecking regularly, single test files regularly, and the full test suite once at the end.
+定期运行类型检查, 定期运行单个测试文件, 最后运行一次完整测试套件.
 
-Once done, use /review to review the work.
+完成后, 使用 /review 来审查工作.
 
-Commit your work to the current branch.
+将你的工作提交到当前分支.

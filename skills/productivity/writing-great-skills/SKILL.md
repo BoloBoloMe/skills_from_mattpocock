@@ -1,82 +1,84 @@
 ---
 name: writing-great-skills
-description: Reference for writing and editing skills well — the vocabulary and principles that make a skill predictable.
+description: 编写和编辑优秀 skills 的参考 - 让 skill 行为可预测的词汇和原则.
 disable-model-invocation: true
 ---
 
-A skill exists to wrangle determinism out of a stochastic system. **Predictability** — the agent taking the same _process_ every run, not producing the same output — is the root virtue; every lever below serves it.
+Skill 的作用, 的存在是为了从随机系统中驯服确定性. **Predictability** 是它的根本价值: agent 每次运行时遵循相同的*过程*, 而不是产出相同的结果. 下面的每个杠杆都服务于这一点.
 
-**Bold terms** are defined in [`GLOSSARY.md`](GLOSSARY.md); look them up there for the full meaning.
+**粗体术语** 在 [`GLOSSARY.md`](GLOSSARY.md) 中定义. 需要完整含义时去那里查.
 
-## Invocation
+## 调用方式
 
-Two choices, trading different costs:
+调用方式有两种, 代价不同:
 
-- A **model-invoked** skill keeps a **description**, so the agent can fire it autonomously _and_ other skills can reach it (you can still type its name too). It contributes to **context load** — the description sits in the window every turn. Mechanics: omit `disable-model-invocation`, and write a model-facing description with rich trigger phrasing ("Use when the user wants…, mentions…").
-- A **user-invoked** skill strips the description from the agent's reach: only you, typing its name, can invoke it — and no other skill can. Zero context load, but it spends **cognitive load**: _you_ are the index that must remember it exists. Mechanics: set `disable-model-invocation: true`; the `description` becomes human-facing — a one-line summary, trigger lists stripped.
+- **model-invoked** skill 保留 **description**, 因此 agent 可以自行触发它, 其他 skill 也可以触及它. 你也可以手动输入名称调用. 代价是增加 **context load**: description 每一轮都会留在上下文窗口里. 机制: 省略 `disable-model-invocation`, 写一个面向模型的 description, 并包含足够清晰的触发短语, 例如 "Use when the user wants..." 或 "mentions...".
+- **user-invoked** skill 会从 agent 的可达范围中移除 description. 只有你输入它的名称时才能调用它, 其他 skill 不能调用. 它的 context load 为零, 但会增加 **cognitive load**:*你* 必须记得它存在, 并知道何时使用它. 机制: 设置 `disable-model-invocation: true`; 此时 `description` 面向人类, 只写一行摘要, 不写触发词清单.
 
-Pick model-invocation only when the agent must reach the skill on its own, or another skill must. If it only ever fires by hand, make it user-invoked and pay no context load.
+只有当 agent 必须自动触发某个 skill, 或另一个 skill 必须触及它时, 才选择 model invocation. 如果它只需要被手动触发, 就让它保持 user-invoked, 避免任何 context load.
 
-When user-invoked skills multiply past what you can remember, that piled-up cognitive load is cured by a **router skill**: one user-invoked skill that names the others and when to reach for each.
+当 user-invoked skills 多到你记不住时, 累积的 cognitive load 可以用一个 **router skill** 解决: 创建一个 user-invoked skill, 列出其他 skills, 并说明什么时候该触发哪一个.
 
-## Writing the description
+## 写 description
 
-A model-invoked **description** does two jobs — state what the skill is, and list the **branches** that should trigger it. Every word increases **context load**, so a description earns even harder pruning than the body:
+model-invoked **description** 做两件事: 说明 skill 是什么, 并列出哪些 **branches** 应该触发它. description 中的每个词都会增加 **context load**, 所以它比正文更需要激进剪枝:
 
-- **Front-load the skill's leading word** — the description is where it does its invocation work.
-- **One trigger per branch.** Synonyms that rename a single branch are **duplication** — "build features using TDD … asks for test-first development" is one branch written twice. Collapse them; keep only genuinely distinct branches.
-- **Cut identity that's already in the body.** Keep the description to triggers, plus any "when another skill needs…" reach clause.
+- **把leading word放在前面**. description 是 invocation 真正发生的地方.
+- **每个 branch 只保留一个触发器.** 给同一个 branch 写同义触发词就是 **duplication**. 例如 "build features using TDD" 和 "asks for test-first development" 是同一个 branch 写了两遍. 把它们折叠起来, 只保留真正不同的 branch.
+- **删除正文里已经说明过的身份信息.** description 应该只保留触发器, 以及必要的 "when another skill needs..." 到达条款.
 
-## Information hierarchy
+## 信息层级
 
-A skill is built from two content types — **steps** and **reference** — that mix freely: a skill can be all steps, all reference, or both. The core decision is which to use and where each sits on the **information hierarchy**, a ladder ranked by how immediately the agent needs the material:
+Skill 由两类内容构成: **steps** 和 **reference**. 它们可以自由混合: 一个 skill 可以全是 steps, 全是 reference, 或两者兼有. 核心决策是: 哪些内容放在何处. 这取决于 **信息层级**, 即按照 agent 对内容需求紧急性排名的梯次:
 
-1. **In-skill step** — an ordered action in `SKILL.md`, the primary tier: what the agent does, in order. Each step ends on a **completion criterion**, the condition that tells the agent the work is done. Make it _checkable_ (can the agent tell done from not-done?) and, where it matters, _exhaustive_ ("every modified model accounted for", not "produce a change list") — a vague criterion invites **premature completion**.
-2. **In-skill reference** — a definition, rule, or fact in `SKILL.md`, consulted on demand. Often a legitimately flat peer-set (every rule of a review on one rung) — a fine arrangement, not a smell. _This skill is all reference._
-3. **External reference** — reference pushed out of `SKILL.md` into a separate file, reached by a **context pointer**, loaded only when the pointer fires. (Spans _disclosed_ reference — a sibling file like `GLOSSARY.md`, still part of the skill — through fully **external reference** that lives outside the skill system and any skill can point at.)
+1. **In-skill step** - `SKILL.md` 中的有序动作, 是主要层级: agent 要做什么, 按什么顺序做. 每一步都以**完成标准**结束, 即告知 agent 这项工作达到什么条件算完成. 完成标准要*可检查* (agent 能区分 done 和 not-done 吗?), 重要处还要*详尽* (例如 "每个修改过的 model 都被说明", 而不是 "产出变更列表"). 模糊的标准会诱发 **premature completion**.
+2. **In-skill reference** - `SKILL.md` 中按需查阅的定义, 规则或事实. 它们通常是合法的平级集合, 例如 review skill 中的每条规则都位于同一层级. 这是合理组织, 不是坏味道.*本 skill 就几乎全是 reference.*
+3. **External reference** - 将 reference 从 `SKILL.md` 推到单独文件中, 通过 **context pointer** 抵达, 只有 pointer 被触发时才加载. 这既可以是*已披露的* reference, 例如 skill 目录中的 sibling 文件 `GLOSSARY.md`, 仍然属于该 skill; 也可以是完全位于 skill 系统之外, 供任意 skill 指向的 **external reference**.
 
-A demanding completion criterion drives thorough **legwork** — the digging the agent does within the work — whether the skill has steps or not, since "every rule applied" binds flat reference just as "every step done" binds a sequence.
+严格的完成标准会迫使 agent 做足 **legwork**, 也就是执行过程中的挖掘工作. 这与 skill 是否有 steps 无关: "应用每条规则" 对扁平 reference 的约束, 就像 "完成每一步" 对有序步骤的约束.
 
-Push too little down and the top bloats; push too much and you hide material the agent actually needs. That tension is the whole decision.
+向下推得太少, 顶层会臃肿. 向下推得太多, 又会隐藏 agent 真正需要的材料. 整个决策都在处理这股张力.
 
-**Progressive disclosure** is the move down the ladder — out of `SKILL.md` into a linked file — so the top stays legible. Mechanics: a linked `.md` file in the skill folder, named for what it holds (this skill discloses its full definitions to `GLOSSARY.md`). Some skills are used in more than one way, and each distinct way is a **branch** — different runs taking different paths through the skill. Branching is the cleanest disclosure test: inline what every branch needs, and push behind a pointer what only some branches reach. A **context pointer**'s _wording_, not its target, decides when and how reliably the agent reaches the material.
+**Progressive Disclosure** 是沿着梯次向下移动内容: 把内容从 `SKILL.md` 移进一个被链接的文件, 让顶层保持可读. 机制: 在 skill 文件夹中放一个链接的 `.md` 文件, 文件名描述其内容. 本 skill 就把完整定义披露到 `GLOSSARY.md`.
 
-Where the ladder decides _how far down_ a piece sits, **co-location** decides _what sits beside it_ once there: keep a concept's definition, rules, and caveats under one heading rather than scattered, so reading one part brings its neighbours with it.
+有些 skill 有多种用法, 每种用法都是一个 **branch**: 不同运行会沿着 skill 的不同路径前进. Branching 是最干净的披露测试: 每个 branch 都需要的内容内联; 只有部分 branch 会触及的内容, 放到 pointer 后面. 一个 **context pointer** 的*措辞*, 而不是它指向的目标, 决定 agent 何时以及多可靠地抵达那份材料.
 
-## When to split
+梯次决定一块内容放得*多深*. **co-location** 决定 agent 抵达后, 它*旁边放什么*: 把一个概念的定义, 规则和注意事项放在同一个标题下, 而不是散落各处. 这样 agent 读到其中一部分时, 也会顺带读到相邻内容.
 
-**Granularity** is how finely you divide skills, and each cut spends one of the two loads, so split only when the cut earns it. Two cuts:
+## 何时拆分
 
-- **By invocation** — split off a **model-invoked** skill when you have a distinct **leading word** that should trigger it on its own, or another skill must reach it. You pay **context load** for the new always-loaded **description**, so that independent reach has to be worth it.
-- **By sequence** — split a run of **steps** when the steps still ahead (a step's **post-completion steps**) tempt the agent to rush the one in front of it (**premature completion**). Keeping them out of view encourages the agent to do more **legwork** on the current task.
+**Granularity** 指 skill 切分得多细. 每次切分都会付出某种负载, 所以只有当切分能赚回成本时才拆. 切分有两种:
 
-## Pruning
+- **按 invocation 拆分** - 当你有一个不同的 **leading word** 应该独立触发它, 或另一个 skill 必须抵达它时, 拆出一个 **model-invoked** skill. 你会为新的常驻 **description** 支付 **context load**, 所以独立可达必须值得.
+- **按 sequence 拆分** - 当前 step 后面那些尚未开始的 **steps**, 也就是某个 step 的 **post-completion steps**, 会诱使 agent 跳过当前工作, 提前冲向后续任务, 从而造成 **premature completion** 时, 就拆分这串 **steps**. 把后续步骤移出视野, 能鼓励 agent 在当前任务上做更多 **legwork**.
 
-Keep each meaning in a **single source of truth**: one authoritative place, so changing the behaviour is a one-place edit.
+## 剪枝
 
-Check every line for **relevance**: does it still bear on what the skill does?
+让每个意义都只有一个 **单一真相源**: 一个权威位置. 这样改变行为只需要编辑一次.
 
-Then hunt **no-ops** sentence by sentence, not just line by line: run the no-op test on each sentence in isolation, and when one fails, delete the whole sentence rather than trim words from it. Be aggressive — most prose that fails should go, not be rewritten.
+检查每一行的 **相关性**: 它是否仍然关系到这个 skill 要做什么?
 
-## Leading words
+然后逐句寻找 **no-ops**, 不只是逐行检查. 对每个句子单独运行 no-op 测试. 一旦失败, 删除整个句子, 不要只在句子里修修补补. 要激进: 大多数失败的散文都应该删除, 而不是重写.
 
-A **leading word** is a compact concept already living in the model's pretraining that the agent thinks with while running the skill (e.g. _lesson_, _fog of war_, _tracer bullets_). Repeated throughout the text (though not necessarily - a strong leading word might only be needed once), it accumulates a distributed definition and anchors a whole region of behaviour in the fewest tokens, by recruiting priors the model already holds.
+## leading word
 
-It serves predictability twice. In the body it anchors _execution_: the agent reaches for the same behaviour every time the word appears. In the description it anchors _invocation_: when the same word lives in your prompts, docs, and code, the agent links that shared language to the skill and fires it more reliably.
+**leading word** 是已经存在于模型预训练中的紧凑概念, agent 运行 skill 时会用它来思考, 例如*lesson*,*fog of war*,*tracer bullets*. leading word在文本中反复出现, 虽然强leading word不一定需要重复很多次. 它会积累分布式定义, 借用模型已有的先验, 用很少的 token 锚定一整片行为.
 
-Hunt for opportunities to refactor skills to use leading words. A triad spelled out at three sites (**duplication**), a description spending a sentence to gesture at one idea — each is a passage begging to **collapse** into a single token. Examples include:
+它从两个方向服务于 Predictability. 在正文中, 它锚定*执行*: agent 每次遇到这个词, 都会触及同一组行为. 在 description 中, 它锚定*invocation*: 当同一个词同时出现在你的 prompt, 文档和代码里, agent 会把这套共享语言连接到 skill, 并更可靠地触发它.
 
-- "fast, deterministic, low-overhead" -> _tight_ — one quality restated across a phase — into a single pretrained word (a _tight_ loop).
-- "a loop you believe in" -> _red_ — converts a fuzzy gate into a binary observable state (the loop goes _red_ on the bug, or it doesn't).
+寻找机会用leading word重构 skill. 如果同一个三元组在三个位置反复展开, 那就是 **duplication**. 如果一个 description 要花一句话指向一个想法, 也可能在乞求 **collapse** 成一个 token. 例子:
 
-You win twice over: fewer tokens, _and_ a sharper hook for the agent to hang its thinking on. Assume every skill is carrying restatements that leading words retire — go find them.
+- "fast, deterministic, low-overhead" ->*tight* - 一个 phase 上反复描述的品质, 可以折叠成单个预训练词, 例如一个 *tight* loop.
+- "a loop you believe in" ->*red* - 把模糊 gate 变成二元可观察状态: 循环在 bug 上变*red*, 或者没有变*red*.
 
-## Failure modes
+你会赢两次: 更少的 token, 以及一个更锋利的钩子, 让 agent 能把思考挂在上面. 假设每个 skill 都有一些重复表达可以被leading word淘汰. 去找出它们.
 
-Use these to diagnose issues the user may be having with the skill.
+## 失败模式
 
-- **Premature completion** — ending a step before it's genuinely done, attention slipping to _being done_. Defence, in order: sharpen the completion criterion first (cheap, local); only if it is irreducibly fuzzy _and_ you observe the rush, hide the post-completion steps by splitting (the sequence cut).
-- **Duplication** — the same meaning in more than one place. Costs maintenance and tokens, and inflates a meaning's prominence on the ladder past its real rank.
-- **Sediment** — stale layers that settle because adding feels safe and removing feels risky. The default fate of any skill without a pruning discipline.
-- **Sprawl** — a skill simply too long, even when every line is live and unique. Hurts readability and maintainability and wastes tokens. The cure is the ladder: disclose **reference** behind pointers, and split by **branch** or sequence so each path carries only what it needs.
-- **No-op** — a line the model already obeys by default, so you pay load to say nothing. The test: does it change behaviour versus the default? A weak leading word (_be thorough_ when the agent is already thorough-ish) is a no-op; the fix is a stronger word (_relentless_), not a different technique.
+用这些概念诊断用户在使用 skill 时可能遇到的问题.
+
+- **Premature completion** - step 在真正完成前就结束, 注意力滑向*已经完成* 的错觉. 防御顺序: 先锐化完成标准, 这是便宜且局部的修复; 只有当标准不可避免地模糊, 且你已经观察到 agent 冲向后续任务时, 才通过拆分隐藏 post-completion steps, 也就是按 sequence 切分.
+- **Duplication** - 同一个意义出现在多个地方. 它会增加维护成本和 token 成本, 还会在层级上夸大这个意义的重要性.
+- **Sediment** - 过期层沉积下来, 因为添加内容感觉安全, 删除内容感觉有风险. 任何缺少剪枝纪律的 skill, 默认都会走向这里.
+- **Sprawl** - 一个 skill 单纯太长, 即使每一行都仍然有效且唯一. 它会损害可读性和可维护性, 并浪费 token. 治法是回到梯次: 把 **reference** 披露到 pointer 后面, 或按 **branch** / sequence 拆分, 让每条路径只携带自己需要的内容.
+- **No-op** - 模型默认就会遵守的一行, 所以你花负载说了一句没有改变行为的话. 测试: 它相对默认行为有改变吗? 弱leading word是 no-op, 例如当 agent 已经大致 thorough 时写*be thorough*. 修复方法不是换一种技术性说法, 而是换一个更强的词, 例如*relentless*.

@@ -1,181 +1,271 @@
-# Glossary — Building Great Skills
+# 术语表 - 构建优秀 skills
 
-The domain model for what makes a skill great. A skill exists to wrangle determinism out of a stochastic system; every term below is a lever on that goal. This is the disclosed reference for [`writing-great-skills`](SKILL.md).
+让 skill 变好的领域模型. Skill 的作用, 是从随机系统中逼出确定性. 下面每个术语, 都是实现这个目标的一个杠杆. 本文件是 [`writing-great-skills`](SKILL.md) 的 disclosed reference.
 
-**Bold terms** in any definition are themselves defined in this glossary; find them by their heading.
+任何定义中的 **粗体术语** 也都在本术语表中定义. 通过对应标题查找即可.
 
-## Language
+## 术语
 
 ### Predictability
 
-The degree to which a skill makes the agent behave the same *way* on every run — the same process, not the same output (a brainstorming skill should *predictably* diverge; its tokens vary, its behaviour doesn't). The root virtue every other term serves — cost and maintainability are symptoms of it, not rivals.
+Skill 让 agent 每次运行都以相同_方式_行动的程度: 相同过程, 不是相同输出. 一个头脑风暴 skill 应该_可预测地_发散: token 会变, 行为模式不变. 这是所有其他术语服务的根本价值. 成本和可维护性是它的症状, 不是它的对手.
 
-_Avoid_: consistency, reliability, robustness, output-determinism
+_避免_: consistency, reliability, robustness, output-determinism
 
 ### Model-Invoked
 
-A skill that keeps its **description** field, so the agent can see it and fire it autonomously — and the human can still type its name, so model-invocation always *includes* user reach. There is no model-only state: a description only ever *adds* agent discovery, never removes the human's. Pays a permanent **context load** on every turn in exchange for that discoverability. Reachable by other skills, because the description that makes it agent-discoverable makes it invocable. A model-invoked skill whose content is all **reference** is also one home for shared reference: another skill can invoke it, so reference needed by several skills lives in one place. Pick model-invocation only when the agent must reach the skill on its own; if it never fires except by hand, drop the description and pay no context load.
+保留 **description** 字段的 skill. Agent 能看到它, 因此可以自行触发它. 人类仍然可以输入名称调用它, 所以 model-invocation 总是_包含_用户可达. 不存在 only-model 的状态: description 只会_增加_ agent 发现能力, 不会移除人类调用能力.
 
-_Avoid_: ability, tool, capability
+代价是每一轮都支付永久 **context load**, 换取可发现性. 它也能被其他 skill 抵达, 因为让它对 agent 可发现的 description, 也让它可被调用.
+
+一个内容全是 **reference** 的 model-invoked skill, 也可以作为共享 reference 的家. 另一个 skill 可以调用它, 所以多个 skill 都需要的 reference 可以只放在一个地方.
+
+只有当 agent 必须自行抵达某个 skill 时, 才选择 model-invocation. 如果它只会被手动触发, 就删除 description, 支付零 context load.
+
+_避免_: ability, tool, capability
 
 ### User-Invoked
 
-A skill with its **description** stripped — invisible to the agent and reachable only by the human typing its name (user-*only*, where **model-invoked** is user-*and-agent*). Trades agent-discoverability for zero **context load**. Because it has no description, nothing but the human can reach it: no other skill can fire it.
+**description** 被剥离的 skill. 它对 agent 不可见, 只能由人类输入名称抵达. 也就是 user-only. 相比之下, **model-invoked** 是 user-and-agent.
 
-_Avoid_: procedure, workflow, command
+它用 agent 可发现性交换零 **context load**. 因为它没有 description, 除了人类之外没有任何东西可以抵达它: 其他 skill 不能触发它.
+
+_避免_: procedure, workflow, command
 
 ### Description
 
-The skill's machine-readable trigger, and the one **context pointer** a **model-invoked** skill is forced to keep loaded at all times. Its mere presence *is* the invocation axis: keep it and the skill is model-invoked (and reachable by other skills); delete it and the skill is **user-invoked**, reachable only by the human. The source of a model-invoked skill's **context load**.
+Skill 的机器可读触发器, 也是 **model-invoked** skill 被迫始终加载的那个 **context pointer**. 它是否存在, 就是 invocation 轴本身: 保留它, skill 就是 model-invoked, 并且可被其他 skill 抵达; 删除它, skill 就是 **user-invoked**, 只能由人类抵达.
 
-_Avoid_: frontmatter, summary
+Description 是 model-invoked skill **context load** 的来源.
+
+_避免_: frontmatter, summary
 
 ### Context Pointer
 
-A reference held in the agent's context that names some out-of-context material and encodes the condition for reaching it. The **description** is the top-level context pointer (context window → skill); pointers to disclosed files are the same object one level down. Its wording, not the target, decides *when* the agent reaches — and *how reliably*. A must-have target behind a weakly worded pointer is a variance bug: fix the wording first, and inline the material only if sharpening fails.
+存在于 agent 上下文中的引用. 它命名某份上下文外材料, 并编码何时应该抵达那份材料. **description** 是顶层 context pointer, 从上下文窗口指向 skill. 指向披露文件的 pointer, 是下一层的同类对象.
 
-_Avoid_: link, reference, import
+决定 agent _何时_抵达材料, 以及_多可靠地_抵达材料的, 是 pointer 的措辞, 不是它的目标. 如果必达材料藏在一个措辞很弱的 pointer 后面, 那就是方差 bug. 先修 pointer 措辞, 只有当锐化措辞失败时, 才把材料拉回内联.
+
+_避免_: link, reference, import
 
 ### Context Load
 
-The cost a **model-invoked** skill imposes on the agent's context window — its **description**, always loaded, spending both tokens and attention. What **user-invoked** skills escape by having no description, and the brake on splitting into more model-invoked skills.
+**model-invoked** skill 加在 agent 上下文窗口上的成本: 它的 **description** 始终加载, 同时消耗 token 和注意力. 这是 **user-invoked** skill 因为没有 description 而避免的成本, 也是拆出更多 model-invoked skills 时的制动器.
 
-_Avoid_: token cost, context bloat
+_避免_: token cost, context bloat
 
 ### Cognitive Load
 
-The cost a **user-invoked** skill imposes on the human — what they must hold in their head: which skills exist and when to reach for each (the human is the index). What **model-invocation** removes by being agent-discoverable, and the brake on splitting into more user-invoked skills. Not a cost to minimise: it is the price of human agency, the reason some skills stay user-invoked. Spend it where human judgement matters; remove it where it does not.
+**user-invoked** skill 加在人类身上的成本: 人类必须在脑中记住哪些 skills 存在, 以及什么时候该触发哪一个. 换言之, 人类成了索引.
 
-_Avoid_: human index, burden, overhead
+**model-invocation** 通过 agent 可发现性移除这项成本. Cognitive load 是拆出更多 user-invoked skills 时的制动器. 它不是必须最小化的成本: 它是人类能动性的代价, 也是某些 skill 应该保持 user-invoked 的原因. 在人类判断重要的地方花费它; 在不重要的地方移除它.
+
+_避免_: human index, burden, overhead
 
 ### Granularity
 
-How finely you divide skills. Finer division spends one of the two loads: more **model-invoked** skills spend **context load** (more descriptions crowding the window and competing for attention); more **user-invoked** skills spend **cognitive load** (more for the human to remember and reach for). Two cuts guide the division. By **invocation**, split off a model-invoked skill where you have a distinct **leading word** to trigger it — a trigger word you actually use in your prompts. By **sequence**, split a run of **steps** where a step's **post-completion steps** need hiding, since isolating it in its own context clears what follows. Beware the reverse: merging sequences exposes each step's post-completion steps to what follows, inviting premature completion.
+你把 skills 切得多细. 更细的切分会消耗两种负载之一: 更多 **model-invoked** skills 会消耗 **context load**, 因为更多 description 会挤进上下文窗口并争夺注意力; 更多 **user-invoked** skills 会消耗 **cognitive load**, 因为人类要记住和触发更多东西.
 
-_Avoid_: chunking, modularity
+有两种切分方式:
+
+- 按 **invocation** 切分: 当你有一个不同的 **leading word** 应该触发它, 也就是一个你确实会在 prompt 中使用的触发词时, 拆出 model-invoked skill.
+- 按 **sequence** 切分: 当某个 step 的 **post-completion steps** 需要被隐藏时, 拆分 **steps**. 把后续步骤隔离到自己的上下文里, 可以清除它们对当前步骤的牵引.
+
+反向操作也要小心: 合并 sequence 会把每个 step 的 post-completion steps 暴露给前面的步骤, 从而邀请 premature completion.
+
+_避免_: chunking, modularity
 
 ### Router Skill
 
-A **user-invoked** skill whose job is to point at your other user-invoked skills — naming each and when to reach for it — so the human has one skill to remember instead of many. It can only hint, never fire them: user-invoked skills have no **description**, so nothing but the human can reach them. The cure for **cognitive load** when user-invoked skills multiply.
+一种 **user-invoked** skill, 工作是指向你的其他 user-invoked skills: 命名每一个, 并说明何时使用它. 这样人类只需要记住一个 skill, 而不是许多个.
 
-_Avoid_: dispatcher, menu, registry, index, router procedure
+它只能建议, 不能触发那些 skills. User-invoked skills 没有 **description**, 所以除了人类以外没有任何东西可以抵达它们. 当 user-invoked skills 数量增长时, router skill 是 **cognitive load** 的解法.
+
+_避免_: dispatcher, menu, registry, index, router procedure
 
 ### Information Hierarchy
 
-A skill's content ranked by how immediately the agent needs it — a single ladder, produced by two cuts: in-file or behind a pointer, and step or reference. The rungs:
+按 agent 紧迫需要程度排列的 skill 内容. 这是单一梯子, 由两种切分共同形成: 内容在文件中还是在 pointer 后面, 内容是 step 还是 reference. 梯子如下:
 
-- **Steps** — in-file, primary
-- **Reference**, in-file — secondary
-- **Reference**, disclosed — behind a **context pointer**
+- **Steps** - 在文件中, 主要层级
+- **Reference**, 在文件中 - 次要层级
+- **Reference**, 已披露 - 在 **context pointer** 后面
 
-A skill with no **steps** uses just the bottom two rungs — often a legitimately flat peer-set (e.g. every rule of a review on one rung), which is a fine arrangement, not a smell. The hierarchy is independent of invocation: a skill can be model- or user-invoked whether it is all steps, all reference, or both. When a skill has steps, in-file reference that should be disclosed buries them and turns attending to them into a coin-flip — a variance lever, not just a legibility one. Keep the top of the ladder legible; push down it whatever you can.
+没有 **steps** 的 skill 只使用后两个层级. 这通常是合法的平级集合, 例如 review skill 中每条规则都在同一层级. 这是良好组织, 不是坏味道.
 
-_Avoid_: structure, organization, layout
+层级独立于 invocation: 一个 skill 可以是 model-invoked 或 user-invoked, 无论它全是 steps, 全是 reference, 还是两者都有.
+
+当 skill 有 steps 时, 本该披露出去的文件内 reference 会掩埋 steps, 让 agent 是否注意到 steps 变成抛硬币. 这不只是可读性杠杆, 也是方差杠杆. 保持梯子顶部可读. 能向下推的内容, 尽量向下推.
+
+_避免_: structure, organization, layout
 
 ### Co-location
 
-Keeping the material an agent needs at once in one place — a concept's definition, rules, and caveats under a single heading, not scattered across the file — so reading one part brings its neighbours with it. The within-file companion to the **Information Hierarchy**: the hierarchy ranks *how far down* a piece sits; co-location decides *what sits beside it* once there. There is no formula for the right format of a body of **reference**; the test is that a skill should read like documentation written for the agent, and grouped material reads that way where scattered material does not. Distinct from **Duplication**: that repeats one meaning in two places, where scattering fragments a single meaning across many.
+把 agent 一次需要的材料放在同一个地方: 一个概念的定义, 规则和注意事项放在同一个标题下, 而不是散落在文件各处. 这样 agent 读到其中一部分时, 会顺带读到相邻内容.
 
-_Avoid_: grouping, clustering, cohesion
+它是 **Information Hierarchy** 在文件内部的搭档: 层级决定一块内容放得_多深_; co-location 决定 agent 抵达后, _旁边放什么_.
+
+没有一种公式能保证 **reference** 格式正确. 测试标准是: 这个 skill 是否读起来像给 agent 写的文档. 聚在一起的材料通常像; 散落的材料通常不像.
+
+它不同于 **Duplication**. Duplication 是一个意义重复出现在两个地方. 散落则是把同一个意义碎成很多片, 分散在许多地方.
+
+_避免_: grouping, clustering, cohesion
 
 ### Branch
 
-A distinct way a skill can be invoked — a case the skill handles — so different runs take different paths through it. A skill with many steps may carry many branches; a linear one has none.
+Skill 可以被调用的不同方式, 也就是 skill 处理的不同 case. 不同运行会走不同路径. 有许多 steps 的 skill 可能携带许多 branches. 线性 skill 没有 branch.
 
-_Avoid_: path, case, fork
+_避免_: path, case, fork
 
 ### Progressive Disclosure
 
-Moving **reference** down the ladder — out of SKILL.md and behind a **context pointer** — so the top stays legible. Not primarily a token optimisation; it is how the **information hierarchy** is protected. Licensed by **branching**: disclose what only some branches need, inline what every path needs, and if a pointer fires unreliably on must-have material, sharpen its wording, and pull it back inline only if that fails.
+把 **reference** 移下梯子: 从 `SKILL.md` 移到 **context pointer** 后面, 让顶层保持可读. 它主要不是 token 优化, 而是保护 **information hierarchy** 的方式.
 
-_Avoid_: lazy loading, chunking
+Progressive disclosure 由 **branching** 许可: 只有部分 branch 需要的内容可以披露出去; 每条路径都需要的内容保留内联. 如果 pointer 没有稳定触发必达材料, 先锐化 pointer 措辞. 只有失败时, 才把材料拉回内联.
+
+_避免_: lazy loading, chunking
 
 ### Steps
 
-The ordered actions the agent performs — when a skill has them, the primary tier of its content, and the part that earns its place in SKILL.md. Not every skill has steps: a skill can be all steps (`tdd`), all **reference** (a review), or both, independent of invocation. Every step ends on a **completion criterion**, clear or vague.
+Agent 执行的有序动作. 当 skill 有 steps 时, steps 是主要内容层级, 值得留在 `SKILL.md` 中.
 
-_Avoid_: workflow, instructions, choreography
+不是每个 skill 都有 steps. Skill 可以全是 steps, 例如 `tdd`; 可以全是 **reference**, 例如 review skill; 也可以两者都有. 这与 invocation 方式无关.
+
+每个 step 都应以一个 **completion criterion** 结束. 这个标准可能清晰, 也可能模糊.
+
+_避免_: workflow, instructions, choreography
 
 ### Completion Criterion
 
-The condition that tells the agent a unit of work is done — the target it judges against. Two properties make it a lever, not just a quality. Its **clarity** (can the agent tell done from not-done?) resists **premature completion** — a vague bound ("understanding reached") lets the agent declare done and slip to the next step; this axis needs *steps* to bite, since premature completion is a between-steps failure. Its **demand** (how much it requires) sets **legwork** — "every modified model accounted for" forces thorough work where "produce a change list" does not — and this axis is *not* step-bound: it can bind a body of flat reference too, which is how a skill with no steps still carries an exhaustiveness bar ("every rule applied"). The strongest criteria are both checkable and exhaustive.
+告诉 agent 一个工作单元何时完成的条件, 也就是它用来判断的目标. 它有两个属性, 使它不只是质量要求, 而是控制行为的杠杆.
 
-_Avoid_: done condition, exit condition, stopping rule
+第一个属性是 **clarity**: agent 能区分 done 和 not-done 吗? 它抵抗 **premature completion**. 模糊边界, 例如 "达到理解", 会让 agent 宣告完成并滑到下一步. 这个轴需要 *steps* 才能发挥作用, 因为 premature completion 是 steps 之间的失败.
+
+第二个属性是 **demand**: 它要求多少工作. "每个修改过的 model 都被说明" 会强制彻底工作, 而 "产出变更列表" 不会. 这个轴不绑定 step: 它也可以约束一团平铺的 reference. 这就是没有 steps 的 skill 仍能携带详尽性标准的方式, 例如 "应用每条规则".
+
+最强的完成标准既可检查, 又有足够 demand.
+
+_避免_: done condition, exit condition, stopping rule
 
 ### Post-Completion Steps
 
-The **steps** that follow the current step. Visible, they pull the agent forward into **premature completion** — the more it sees, the stronger the tug; the defence is to hide them by splitting the sequence of steps into two.
+跟在当前 step 后面的 **steps**. 当它们可见时, 会把 agent 拉向 **premature completion**. Agent 看得越多, 拉力越强. 防御方法是把 steps 序列拆成两段, 从而隐藏后续步骤.
 
-_Avoid_: horizon, fog of war, lookahead
+_避免_: horizon, fog of war, lookahead
 
 ### Legwork
 
-The work an agent does behind the scenes within a single step — reading files, exploring the codebase, making changes, digging up what it needs rather than offloading to the user. It lives below the step structure: never written as its own step, latent in the wording, controlled by the agent rather than the skill. The within-step counterpart to **post-completion steps**' across-step pull. Raised by a **leading word** (_comprehensive_, _thorough_) or a **completion criterion** that demands the work be exhaustive — including the demand axis applied to flat reference, which is what drives a skill of flat reference to cover all its rungs. Goes thin either when that demand is missing or when **premature completion** cuts the step short.
+Agent 在单个 step 内部幕后完成的工作: 读取文件, 探索代码库, 修改代码, 自己挖出需要的信息, 而不是把工作转嫁给用户.
 
-_Avoid_: scope, effort, diligence, coverage
+Legwork 位于 step 结构之下: 不要把它写成自己的 step. 它藏在措辞里, 由 agent 执行, 而不是由 skill 逐条控制. 它是 **post-completion steps** 跨 step 牵引力在 step 内部的对应物.
+
+可以通过 **leading word** 提高 legwork, 例如 _comprehensive_, _thorough_; 也可以通过要求详尽工作的 **completion criterion** 提高, 包括作用于平铺 reference 的 demand 轴. 这就是驱动纯 reference skill 覆盖所有规则的东西.
+
+当 demand 缺失, 或 **premature completion** 切断 step 时, legwork 会变薄.
+
+_避免_: scope, effort, diligence, coverage
 
 ### Reference
 
-Material the agent refers to on demand — definitions, facts, parameters, examples, conditional instructions. When a skill has **steps** it is secondary to them; when a skill has none it is the entire content; or it lives outside any skill entirely — see **External Reference**. Reached via **context pointers**, and the prime candidate for **progressive disclosure**.
+Agent 按需参考的材料: 定义, 事实, 参数, 示例, 条件指令. 当 skill 有 **steps** 时, reference 次于 steps. 当 skill 没有 steps 时, reference 就是全部内容. 它也可以完全生活在任何 skill 之外, 见 **External Reference**.
 
-_Avoid_: supporting material, docs, background
+Reference 可以通过 **context pointer** 抵达, 是 **progressive disclosure** 的首要候选.
+
+_避免_: supporting material, docs, background
 
 ### External Reference
 
-**Reference** that lives outside the skill system — a plain file, no **description**, no **steps**, not invocable — that any skill can point at. The home for shared reference that needn't fire on its own, and the only shared home two **user-invoked** skills can use, since neither has a description and so neither can fire the other.
+生活在 skill 系统之外的 **reference**: 一个普通文件, 没有 **description**, 没有 **steps**, 不可调用, 但任何 skill 都可以指向它.
 
-_Avoid_: doc, resource, knowledge base
+它是不需要自行触发的共享 reference 的家. 它也是两个 **user-invoked** skills 共享材料的唯一方式, 因为两者都没有 description, 也就不能触发对方.
+
+_避免_: doc, resource, knowledge base
 
 ### Leading Word
 
-A compact concept — also called a *Leitwort* — already living in the model's pretraining, that the agent thinks with while running the skill. It encodes a behavioural principle in the fewest possible tokens by invoking priors the model already holds (e.g. _lesson_, _proximal zone of development_, _fog of war_, _tracer bullets_). Repeated as a token, never as a sentence, it accumulates a distributed definition across the skill and anchors a whole region of behaviour. Coining your own works if you define it clearly, but a made-up word recruits no priors — you pay in definition tokens what a pretrained word gives free. Reach for an existing word first.
+一个紧凑概念, 也叫 *Leitwort*. 它已经存在于模型预训练中, agent 运行 skill 时会用它思考. 它借用模型已有先验, 用尽可能少的 token 编码行为原则, 例如 _lesson_, _proximal zone of development_, _fog of war_, _tracer bullets_.
 
-A leading word serves **predictability** twice. In the body it anchors **execution** — the agent reaches for the same behaviour every time the concept appears, and inside flat reference it focuses attention on a class of thing to look for, recruiting the right checks each run. In the **description** it anchors **invocation** — and not only within the skill: when the same word lives in your prompts, your docs, and your codebase, the agent links that shared language to the skill and fires it more reliably. Word a description with the leading words you actually use when you want the skill.
+它作为 token 重复, 而不是作为句子重复. 它会在 skill 中积累分布式定义, 并锚定一整片行为. 自造词在定义清楚时也能工作, 但它不会招募预训练先验. 你需要支付定义 token, 才能得到已有词免费给你的东西. 先找已有词.
 
-_Avoid_: keyword, term, motif
+引导词两次服务于 **predictability**. 在正文中, 它锚定 **execution**: agent 每次遇到这个概念, 都会触及同一组行为. 在平铺 reference 中, 它会聚焦 agent 对某类对象的注意力, 每次运行都招募正确的检查.
+
+在 **description** 中, 它锚定 **invocation**. 这不只发生在 skill 内部: 当同一个词存在于你的 prompt, 文档和代码库中, agent 会把这套共享语言连接到 skill, 并更可靠地触发它. 用你真正希望触发该 skill 时会使用的 leading word 来写 description.
+
+_避免_: keyword, term, motif
 
 ### Single Source of Truth
 
-The desired state where each meaning lives in exactly one authoritative place, so a change to the skill's behaviour is a change in one place. **Duplication** is its violation.
+每个意义都只生活在一个权威位置的理想状态. 这样改变 skill 行为时, 只需要修改一个地方. **Duplication** 是对它的破坏.
 
-_Avoid_: home, canonical location
+_避免_: home, canonical location
 
 ### Relevance
 
-Whether a line still bears on what the skill does — the lens for what to keep. A line loses relevance either by never bearing on the task (mere exposition, or a **branch** that should be disclosed) or by going stale: drifting out of date as the behaviour or world it describes changes. Shorter skills are easier to keep relevant, because each line is cheaper to check. Distinct from **no-op**: relevance asks whether a line bears on the task, not whether it changes behaviour.
+一行内容是否仍然关系到 skill 要做什么. 这是决定保留什么的镜头.
 
-_Avoid_: load-bearing, staleness, freshness
+一行失去 relevance, 可能因为它从未真正关系到任务, 例如纯叙述, 或者本应披露到某个 **branch** 后面; 也可能因为它已经过期, 随着它描述的行为或世界改变而漂移.
 
-## Failure Modes
+更短的 skill 更容易保持 relevant, 因为每一行都更便宜检查. Relevance 不同于 **no-op**: relevance 问一行是否关系到任务; no-op 问它是否改变行为.
+
+_避免_: load-bearing, staleness, freshness
+
+## 失败模式
 
 ### Premature Completion
 
-Ending the current step before it is genuinely done, because the agent's attention slips to being done rather than to the work. A between-steps failure: it needs **steps** to occur — a skill with no steps that quits early isn't premature completion but thin **legwork** under an unmet demand. A tug-of-war between two forces: visible **post-completion steps** (the pull forward) and the **completion criterion**'s clarity (the resistance — a sharp, checkable bar holds; a vague one gives way). Fuzziness is the necessary condition: a sharp bound resists the pull no matter how many later steps are visible, so a step that never rushes needs no defending. Two levers hold a step that does, but reach for them in order: **sharpen the bound first** — it is local and cheap. Only when the criterion is irreducibly fuzzy *and* you actually observe the rush do you **hide the later steps** — and hiding only works across a real context boundary (a user-invoked hand-off or a subagent dispatch; an inline model-invoked call leaves the later steps in context and clears nothing). One cause of thin legwork, but distinct from it: legwork can be thin even when a step runs to full completion.
+当前 step 在真正完成之前就结束, 因为 agent 的注意力滑向了完成感, 而不是继续工作.
 
-_Avoid_: premature closure, the rush, rushing, shortcutting
+这是 steps 之间的失败: 它需要 **steps** 才会发生. 一个没有 steps 的 skill 如果太早退出, 不是 premature completion, 而是 demand 不足导致 **legwork** 变薄.
+
+它是两股力量的拉扯: 可见的 **post-completion steps** 向前拉; **completion criterion** 的 clarity 提供阻力. 锐利, 可检查的 bar 能撑住; 模糊 bar 会让步. 模糊性是必要条件: 如果边界足够锐利, 无论后面有多少 steps 可见, 它都能抵抗拉力. 所以, 一个从不向前冲的 step 不需要防御.
+
+有两个杠杆可以撑住会前冲的 step, 但要按顺序使用:
+
+1. **先锐化边界**. 这是局部且便宜的修复.
+2. 只有当标准不可避免地模糊, 且你确实观察到 agent 冲向后续步骤时, 才**隐藏后续 steps**.
+
+隐藏只有在真实上下文边界上才有效, 例如 user-invoked hand-off 或 subagent dispatch. 内联 model-invoked 调用不会清除上下文, 后续 steps 仍然留在那里.
+
+Premature completion 是 legwork 变薄的一个原因, 但两者不同: 即使 step 跑到完成, legwork 也可能很薄.
+
+_避免_: premature closure, the rush, rushing, shortcutting
 
 ### Duplication
 
-The same meaning given more than one **single source of truth**. It costs maintenance (change one place, you must change the others), costs tokens, and inflates prominence — repeating a meaning weights it on the ladder past its real rank. The accidental inverse of a **leading word**, which raises attention on purpose by repeating a token, never the meaning.
+同一个意义拥有多个 **single source of truth**. 它会增加维护成本, 因为改一处就必须改其他地方; 增加 token 成本; 还会夸大重要性, 因为重复的意义在层级中获得了超过真实排名的权重.
 
-_Avoid_: repetition, redundancy
+它有点像 **leading word** 的反面. Leading word 是有意重复 token 来提高注意力; duplication 是无意重复意义, 导致维护和权重问题.
+
+_避免_: repetition, redundancy
 
 ### Sediment
 
-Layers of old content that settle in a skill and are never cleared, because adding feels safe and removing feels risky — so stale and irrelevant lines accumulate and you must core down through them to find what is still live. The default fate of any skill without a pruning discipline; the slow erosion of **relevance**, as opposed to **duplication**'s repeated meaning.
+Skill 中从未清除的旧内容层沉积下来. 添加内容感觉安全, 删除内容感觉有风险, 所以过期和无关的行会不断累积. 你必须从这些沉积物里钻过去, 才能找到仍然活着的内容.
 
-_Avoid_: accretion, bloat, cruft, rot
+这是任何缺少剪枝纪律的 skill 的默认命运. 它是 **relevance** 的缓慢侵蚀, 不同于 **duplication** 所说的意义重复.
+
+_避免_: accretion, bloat, cruft, rot
 
 ### Sprawl
 
-A skill that is simply too long — too many lines in SKILL.md — independent of whether they are stale or repeated. Even an all-live, all-unique skill can sprawl. It costs readability (the agent wades through more before it can act, and attention thins across the excess), maintainability (every extra line is one more to keep **relevant**), and tokens. The cure is the **information hierarchy**: push **reference** down behind **context pointers**, and split by **branch** or sequence so each path carries only what it needs. Distinct from **sediment** (length from stale accumulation) and **duplication** (length from repeated meaning) — sprawl is length itself, whatever its cause.
+Skill 单纯太长: `SKILL.md` 中行数太多, 与这些行是否过期或重复无关. 即使一个 skill 每一行都有效且唯一, 也可能 sprawl.
 
-_Avoid_: bloat, length, size, verbosity
+它消耗可读性, 因为 agent 在行动前必须涉过更多内容, 注意力在过量材料中变薄. 它消耗可维护性, 因为每多一行, 就多一行需要保持 **relevant**. 它也消耗 token.
+
+治法是回到 **information hierarchy**: 把 **reference** 推到 **context pointer** 后面, 或按 **branch** / sequence 拆分, 让每条路径只携带自己需要的内容.
+
+Sprawl 不同于 **sediment** 和 **duplication**. Sediment 是过时内容造成的长度. Duplication 是重复意义造成的长度. Sprawl 是长度本身, 无论原因是什么.
+
+_避免_: bloat, length, size, verbosity
 
 ### No-Op
 
-An instruction that changes nothing because the model already does it by default — you pay load to tell the agent what it would do anyway. The test: does a line change behaviour versus the default? A line can be perfectly **relevant** and still be a no-op. The same priors that make a **leading word** free make a no-op worthless.
+一条不改变任何行为的指令, 因为模型默认就会这么做. 你支付负载, 告诉 agent 它本来就会做的事.
 
-A leading word is a *technique*; No-Op is a *verdict* on a line — and they cross. A leading word too weak to beat the default is a no-op (_be thorough_ when the agent is already thorough-ish), and the fix is a stronger word that passes the verdict (_relentless_), not a different technique. So the No-Op test — does it change behaviour versus the default? — is also how you grade whether a leading word is earning its repetitions. This is model-relative, not reader-relative: two people disagreeing over whether a line is a no-op disagree about the default, and settle it by running the skill, not by debate.
+测试方法: 这一行相对默认行为有改变吗? 一行可以完全 **relevant**, 但仍然是 no-op. 让 **leading word** 免费发挥作用的同一套先验, 也让 no-op 没有价值.
 
-_Avoid_: redundant instruction, restating the obvious, belaboring
+Leading word 是一种_技术_. No-op 是对某一行的_裁决_. 它们会交叉: 一个太弱, 不足以击败默认行为的 leading word, 就是 no-op. 例如当 agent 已经大致 thorough-ish 时, 写 _be thorough_ 就没有价值. 修复不是换一种技术性说法, 而是换一个能通过裁决的更强词, 例如 _relentless_.
+
+因此, No-Op 测试, 也就是 "它相对默认行为有改变吗?", 同时也是你判断 leading word 是否值得重复的方式. 这是相对模型的判断, 不是相对读者的判断. 如果两个人对一行是否 no-op 有分歧, 真正的分歧在于他们对模型默认行为的判断不同. 通过运行 skill 解决, 不要靠辩论解决.
+
+_避免_: redundant instruction, restating the obvious, belaboring
